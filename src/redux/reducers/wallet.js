@@ -1,12 +1,15 @@
 const INITIAL_STATE = {
-  currencies: [],
-  expenses: [],
+  wallet: {
+    currencies: [],
+    expenses: [],
+    editor: false,
+    idToEdit: 0,
+    totalExpenses: 10,
+  },
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case 'exemplo':
-    return state;
   default:
     return state;
   }

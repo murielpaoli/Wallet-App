@@ -1,58 +1,73 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { addUser } from '../redux/actions';
+import handleValidation from '../complements/validateForm';
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
+  state = {
+    email: '',
+    password: '',
+    disabled: true,
+  };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.checkEntries = this.checkEntries.bind(this);
-
-    this.state = {
-      email: '',
-      password: '',
-    };
-  }
-
-  handleChange(event) {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
-  }
-
-  checkEntries() {
+  handleChange = ({ target }) => {
+    const { name, value } = target;
     const { email, password } = this.state;
-    const emailPattern = /\b[\w.-]+@[\w.-]+\.\w{2,4}\b/gi; // reference: https://regexr.com/2ri2c
-    const passwordMinLength = 6;
-    const checkPassword = password.length >= passwordMinLength;
-    const checkEmail = email.match(emailPattern);
-    return !(checkEmail && checkPassword);
-  }
+    this.setState({
+      [name]: value,
+    });
+    const disabled = !handleValidation(email, password);
+    this.setState({ disabled });
+  };
+
+  handleClick = () => {
+    const { dispatch, history } = this.props;
+    const { email } = this.state;
+    dispatch(addUser(email));
+    history.push('/carteira');
+  };
 
   render() {
+    const { email, password, disabled } = this.state;
     return (
-      <div>
-        <h2>Trybe Wallet</h2>
-        <p>Login</p>
-
-        <form action="/carteira">
+      <section>
+        <h1>Login</h1>
+        <form>
           <input
-            placeholder="Email"
-            name="email"
-            type="email"
-            onChange={ this.handleChange }
+            type="text"
             data-testid="email-input"
+            placeholder="my-email@email.com"
+            name="email"
+            value={ email }
+            onChange={ this.handleChange }
           />
           <input
-            placeholder="Senha"
-            name="password"
             type="password"
-            onChange={ this.handleChange }
             data-testid="password-input"
+            placeholder="******"
+            name="password"
+            value={ password }
+            onChange={ this.handleChange }
           />
-          <button disabled={ this.checkEntries() } type="submit">Entrar</button>
+          <button
+            type="button"
+            disabled={ disabled }
+            onClick={ this.handleClick }
+          >
+            Entrar
+          </button>
         </form>
-      </div>
+      </section>
     );
   }
 }
 
-export default Login;
+Login.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
+
+export default connect()(Login);

@@ -1,11 +1,16 @@
+import { ADD_USER } from '../actions';
+
 const INITIAL_STATE = {
-  email: '',
+  email: 'murielpaoli@gmail.com',
 };
 
 const user = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case 'exemplo':
-    return state;
+  case ADD_USER:
+    return ({
+      ...state,
+      email: action.payload,
+    });
   default:
     return state;
   }
