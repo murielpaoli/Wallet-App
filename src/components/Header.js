@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
+
 import { connect } from 'react-redux';
+
 import PropTypes from 'prop-types';
 
 class Header extends Component {
-  sumAskInExpenses = () => {
+  sumExpenses = () => {
     const { expenses } = this.props;
     let result = 0;
     expenses.forEach((expense) => {
       const { exchangeRates } = expense;
       const { currency } = expense;
-      // console.log(exchangeRates);
-      // console.log(currencies);
       if (currency in exchangeRates) {
         const ask = parseFloat(exchangeRates[currency].ask);
         const value = parseFloat(expense.value);
@@ -28,7 +28,7 @@ class Header extends Component {
         <div>
           <p data-testid="email-field">{email}</p>
           <p data-testid="total-field">
-            {this.sumAskInExpenses()}
+            {this.sumExpenses()}
           </p>
           <p data-testid="header-currency-field">BRL</p>
         </div>

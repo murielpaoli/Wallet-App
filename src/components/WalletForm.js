@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+
 import PropTypes from 'prop-types';
+
+import { connect } from 'react-redux';
+
 import { fetchApi, getExpenses } from '../redux/actions/index';
 
 class WalletForm extends Component {
@@ -26,17 +29,14 @@ class WalletForm extends Component {
 
   handleExpenseSubmit = async () => {
     const { dispatch } = this.props;
-    // const { value, description, currency, method, tag } = this.state;
 
     const exchangeRates = await dispatch(fetchApi());
 
-    // fazendo o formato que pede para enviar para o estado global
     const forGlobalState = {
       ...this.state,
       exchangeRates,
     };
 
-    // enviando ao estado global via dispatch e a nova action feita (EXPENSES)
     dispatch(getExpenses(forGlobalState));
 
     this.setState((prev) => ({
@@ -55,7 +55,7 @@ class WalletForm extends Component {
     return (
       <div>
         <label>
-          digite o valor da despesa:
+          Enter expense value:
           <input
             type="value"
             name="value"
@@ -66,7 +66,7 @@ class WalletForm extends Component {
           />
         </label>
         <label>
-          digite a descrição:
+          Enter description:
           <input
             name="description"
             value={ description }
@@ -132,7 +132,7 @@ class WalletForm extends Component {
 }
 
 WalletForm.propTypes = {
-  currencies: PropTypes.shape().isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
