@@ -1,15 +1,26 @@
-const INITIAL_STATE = {
-  wallet: {
-    currencies: [],
-    expenses: [],
-    editor: false,
-    idToEdit: 0,
-    totalExpenses: 10,
-  },
+import { CURRENCIES, EXPENSES } from '../actions';
+
+const INIIAL_STATE = {
+
+  currencies: [],
+  expenses: [],
+  editor: false,
+  idToEdit: 0,
+
 };
 
-const wallet = (state = INITIAL_STATE, action) => {
+const wallet = (state = INIIAL_STATE, action) => {
   switch (action.type) {
+  case CURRENCIES:
+    return {
+      ...state,
+      currencies: action.payload,
+    };
+  case EXPENSES:
+    return {
+      ...state,
+      expenses: [...state.expenses, action.payload],
+    };
   default:
     return state;
   }
